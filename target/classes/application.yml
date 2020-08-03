@@ -1,0 +1,33 @@
+#指定启动端口
+server:
+  port: 8081
+  #  servlet:
+  #    session:
+  #      timeout: 3600s   #session失效时间，默认为1800s
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: hello-world
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 1MB
+
+
+#指定log配置，仅仅只是本地开发时的配置，部署的配置是通过启动脚本指定的
+logging:
+  level:
+    com.sunline: debug
+    org.springframework: warn
+  # config: classpath:logconf/log4j2.xml
+
+#feign的超时时间, 防止feign调用超时
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 15000 #单位毫秒
+        readTimeout: 60000  #单位毫秒

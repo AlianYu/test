@@ -1,0 +1,52 @@
+#==============####jdbc配置==============####
+spring:
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      stat-view-servlet:
+        loginUsername: admin
+        loginPassword: 123456
+        enabled: true
+    dynamic:
+      druid: #以下是全局默认值，可以全局更改
+        max-active: 10
+      primary: dev_wser #设置默认的数据源或者数据源组
+      datasource:
+        dev_wser:
+          url: jdbc:mysql://10.22.80.22:3306/dev_wser?useUnicode=true&characterEncoding=utf-8
+          username: dev_wser
+          password: mysql
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        enabled: false
+
+
+
+  #==============redis配置 ==============
+  redis:
+    #redisson:
+    #  config: classpath:redisson/single.yml
+    host: 10.22.20.33
+    password: sun300348    #如果无密码，不配置
+    timeout: 5000          # 连接超时时间，单位ms
+    port: 6379
+    database: 0       #可以不配置，默认为0
+
+
+
+mybatis-plus:
+  mapper-locations: classpath*:mybatis/*/*.xml   #mybatis sql文件扫描，多个逗号分隔
+  global-config:
+    banner: false
+
+
+#==============是否开启服务单体调试模式=================#
+#如果为true，就可以只启动当前服务，进行后台接口的调试。 否则必须要调用Pcmc进行登录获取token当做参数才行
+server-single-debug-enabled: true
+
+
