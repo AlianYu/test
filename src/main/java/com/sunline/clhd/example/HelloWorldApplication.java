@@ -10,6 +10,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @Author: lihu
  * @Date: 2020/7/17 017 13:46
+ * aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ *
  */
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = {"com.sunline"})
