@@ -1,7 +1,9 @@
 package com.springboot.springsecurity1.bean;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import io.swagger.annotations.Api;
 
+@Api("User测试实体类")
 public class User {
     private String name;
     private int id;

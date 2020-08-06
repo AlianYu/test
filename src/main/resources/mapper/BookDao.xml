@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.springsecurity1.dao.BookDao">
+
+    <resultMap id="bookDao" type="com.springboot.springsecurity1.dao.BookDao">
+        <id column="owner_id" property="owenerId"/>
+        <result column="owner_Name" property="ownerName" />
+        <result column="owner_sex" property="ownerSex" />
+        <result column="owner_age" property="ownerAge" />
+        <result column="owner_address" property="ownerAddress" />
+        <result column="owner_email" property="ownerEmail" />
+    </resultMap>
+
+    <select id="selectAll" resultType="com.springboot.springsecurity1.bean.BookOwnerVO">
+        SELECT
+        b.book_id,
+        b.book_name,
+        b.created_time,
+        o.owner_id,
+        o.owner_Name,
+        o.owner_email,
+        o.owner_address
+        FROM book b join t_bookowner o on b.owner_id = o.owner_id
+    </select>
+</mapper>

@@ -1,8 +1,11 @@
 package com.springboot.springsecurity1.bean;
 
+import io.swagger.annotations.Api;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Api("Book实体类")
 public class Book implements Serializable {
     private int bookId;
     private String bookName;
