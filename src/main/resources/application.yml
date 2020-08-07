@@ -6,9 +6,7 @@ eureka:
     fetch-registry: false #是否检索服务
     serviceUrl: #指定服务中心的位置
       defaultZone: http://localhost:10001/eureka
-#security:
- # basic:
-  #  enabled: false
+
 spring:
   #数据库配置
   datasource:

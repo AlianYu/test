@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 public class User {
     private String name;
     private int id;
+    private String password;
 
     public User() {
         System.out.println("无参构造");
@@ -26,5 +27,13 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
