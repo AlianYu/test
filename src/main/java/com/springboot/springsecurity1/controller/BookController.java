@@ -1,25 +1,62 @@
 package com.springboot.springsecurity1.controller;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.springboot.springsecurity1.bean.Book;
+import com.springboot.springsecurity1.bean.BookOwnerVO;
 import com.springboot.springsecurity1.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.minidev.json.JSONUtil;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
+
 @Api("书本控制层")
 @RequestMapping("book")
 @RestController
 public class BookController {
 
-    @Autowired
+    @Autowired(required = true)
     private BookService bookService;
+
+    /**
+     * 测试导出
+     *
+     */
+    @ApiOperation(value = "导出excel文件")
+    @GetMapping("poi")
+    public List<BookOwnerVO> testpoi(HttpServletResponse response) throws FileNotFoundException {
+        List<BookOwnerVO> list =  bookService.selectAll();
+        ExportParams exportParams = new ExportParams();
+        exportParams.setSheetName("我是sheet名字");
+        // 生成workbook 并导出
+        Workbook workbook = ExcelExportUtil.exportExcel(exportParams, BookOwnerVO.class, list);
+        File savefile = new File("E:/temp/easypoi");
+        if (!savefile.exists()) {
+            boolean result = savefile.mkdirs();
+            System.out.println("目录不存在，创建" + result);
+        }
+        FileOutputStream fos = new FileOutputStream("E:/temp/easypoi/学生.xls");
+        try {
+            workbook.write(fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * 根据书编号查询书的信息
@@ -56,7 +93,7 @@ public class BookController {
 
     @ApiOperation(value ="联表查询，返回BookOwnerVO")
     @GetMapping("getall")
-    public List<Object> getAll(){
+    public List<BookOwnerVO> getAll(){
         return bookService.selectAll();
     }
 
@@ -84,6 +121,37 @@ public class BookController {
         QueryWrapper<Book> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("book_id",book.getBookId());
         return bookService.updateBook(book,queryWrapper);
+    }
+
+    @ApiOperation("导入到数据库")
+    @PostMapping("/imp")
+    public int upload(@RequestParam("file") MultipartFile multipartFile) throws Exception {
+        ImportParams params = new ImportParams();
+        //params.setHeadRows(2);
+        // params.setTitleRows(0);
+        System.out.println(multipartFile.getOriginalFilename());
+        //扫描xls文件
+        List<Book> result = ExcelImportUtil.importExcel(multipartFile.getInputStream(),
+                Book.class, params);
+       for(Book book :result){
+           System.out.println(book);
+       }
+       //导入数据库
+        return bookService.insertbBookBatch(result);
+        //return 0;
+    }
+
+    @ApiOperation("批量添加Book")
+    @RequestMapping("batch")
+    public int batchTest(){
+        List<Book> list = new ArrayList<>();
+        Book b1 = new Book("2020.8.10java测试1","测试",1,1,"张三","诗人");
+        Book b2 = new Book("2020.8.10java测试2","测试",1,1,"张三","诗人");
+        Book b3 = new Book("2020.8.10java测试3","测试",1,1,"张三","诗人");
+        list.add(b1);
+        list.add(b2);
+        list.add(b3);
+        return bookService.insertbBookBatch(list);
     }
 
 

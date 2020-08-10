@@ -22,4 +22,14 @@
         o.owner_address
         FROM book b join t_bookowner o on b.owner_id = o.owner_id
     </select>
+
+    <insert id="insertbBookBatch" parameterType = "java.util.List">
+        INSERT INTO book(book_name,picture,owner_id,current_owner_id,author,description)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.bookName},#{item.picture},#{item.ownerId},#{item.currentOwnerId},#{item.author},#{item.description})
+        </foreach>
+    </insert>
+
+
 </mapper>

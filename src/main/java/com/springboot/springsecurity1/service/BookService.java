@@ -3,14 +3,21 @@ package com.springboot.springsecurity1.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.springboot.springsecurity1.bean.Book;
+import com.springboot.springsecurity1.bean.BookOwnerVO;
 import com.springboot.springsecurity1.dao.BookDao;
 import io.swagger.annotations.Api;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+//extends IService<Book>是为了批量插入
+//BaseMapper未提供批量插入接口，但是在com.baomidou.mybatisplus.service.IService中提供了
+
 @Api("书本服务层接口")
-public interface BookService{
+public interface BookService {
+    int insertbBookBatch (List<Book> list);
 
     /**
      * 通过书本名字查找对应书籍
@@ -42,9 +49,10 @@ public interface BookService{
      * 联表查询
      * @return
      */
-    List<Object> selectAll();
+    List<BookOwnerVO> selectAll();
 
     int addBook(Book book);
     int deleteBook(int bookId);
     int updateBook(Book book, Wrapper<Book> wrapper);
+
 }
