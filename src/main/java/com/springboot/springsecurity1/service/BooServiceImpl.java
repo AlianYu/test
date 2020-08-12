@@ -7,12 +7,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.springboot.springsecurity1.bean.Book;
 import com.springboot.springsecurity1.bean.BookOwnerVO;
+import com.springboot.springsecurity1.bean.Owner;
 import com.springboot.springsecurity1.dao.BookDao;
+import com.springboot.springsecurity1.dao.OwnerDao;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
@@ -28,6 +31,30 @@ public  class BooServiceImpl implements BookService {
 
     @Autowired
     private BookDao bookDao;
+
+    @Autowired
+    private OwnerDao ownerDao;
+
+    @Override
+    @Transactional
+    public Boolean updateAll(Owner owner) {
+        if(owner == null){
+            return false;
+        }
+        QueryWrapper<Owner> qw1 = new QueryWrapper<>();
+        qw1.eq("owner_id",owner.getOwnerId());
+        ownerDao.update(owner,qw1);
+
+        List<Book> bookList = owner.getBookList();
+        QueryWrapper<Book> qw2;
+        for (Book book: bookList) {
+            qw2 = new QueryWrapper<>();
+            int bookId = book.getBookId();
+            qw2.eq("book_id",bookId);
+            bookDao.update(book,qw2);
+        }
+        return true;
+    }
 
     @Override
     public int insertbBookBatch(List<Book> list) {

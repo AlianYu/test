@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.springboot.springsecurity1.bean.Book;
 import com.springboot.springsecurity1.bean.BookOwnerVO;
+import com.springboot.springsecurity1.bean.Owner;
 import com.springboot.springsecurity1.dao.BookDao;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,12 @@ public interface BookService {
     int addBook(Book book);
     int deleteBook(int bookId);
     int updateBook(Book book, Wrapper<Book> wrapper);
+
+    /**
+     * 修改书本所属者个人信息以及拥有的书的信息
+     * @param owner
+     * @return
+     */
+    Boolean updateAll(Owner owner);
 
 }

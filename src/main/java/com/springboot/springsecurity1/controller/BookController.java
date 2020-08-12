@@ -4,16 +4,19 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.springboot.springsecurity1.bean.Book;
 import com.springboot.springsecurity1.bean.BookOwnerVO;
+import com.springboot.springsecurity1.bean.Owner;
 import com.springboot.springsecurity1.service.BookService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import net.minidev.json.JSONUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -152,6 +155,14 @@ public class BookController {
         list.add(b2);
         list.add(b3);
         return bookService.insertbBookBatch(list);
+    }
+    @PostMapping("/com")
+    @ResponseBody
+    public Boolean updateAll(@RequestBody JSONObject param){
+        JSONObject task_json = param.getJSONObject("owner");
+        Owner task = (Owner)JSONObject.toJavaObject(task_json,Owner.class);
+        System.out.println(task);
+        return true;
     }
 
 

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @Api("启动类")
 @SpringBootApplication
 @EnableFeignClients // 开启Feign功能
-@EnableEurekaServer
+@EnableEurekaServer //服务注册中心
 @MapperScan("com.springboot.springsecurity1.dao")
 public class App {
     public static void main(String[] args) {

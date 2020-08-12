@@ -1,15 +1,24 @@
 package com.springboot.springsecurity1.bean;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.Api;
+import lombok.Data;
+
+import java.util.List;
 
 @Api("Owner用户实体类")
+@TableName("t_bookowner")
+@Data
 public class Owner {
-    private int ownerId;
-    private String ownerName;
-    private String ownerSex;
-    private int ownerAge;
-    private String ownerAddress;
-    private String ownerEmail;
+    @TableId
+    private int ownerId;  //所属人编码
+    private String ownerName;  //所属人姓名
+    private String ownerSex;   //所属人性别
+    private int ownerAge;    //所属人年龄
+    private String ownerAddress;  //所属人地址
+    private String ownerEmail;   //所属人邮箱
+    private List<Book> bookList;
 
     public Owner() {
     }
@@ -62,15 +71,11 @@ public class Owner {
         this.ownerEmail = ownerEmail;
     }
 
-    @Override
-    public String toString() {
-        return "Owner{" +
-                "ownerId=" + ownerId +
-                ", ownerName='" + ownerName + '\'' +
-                ", ownerSex='" + ownerSex + '\'' +
-                ", ownerAge=" + ownerAge +
-                ", ownerAddress='" + ownerAddress + '\'' +
-                ", ownerEmail='" + ownerEmail + '\'' +
-                '}';
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 }
